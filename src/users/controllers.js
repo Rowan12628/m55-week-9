@@ -1,4 +1,5 @@
 const User = require("./model");
+const { get } = require("./routes");
 
 const addUser = async (req, res) => {
   console.log("req.body: ", req.body);
@@ -11,4 +12,13 @@ const addUser = async (req, res) => {
   }
 };
 
-module.exports = { addUser: addUser };
+const getAllUsers = async (req, res) => {
+  try {
+    const allUsers = await User.findAll();
+    res.status(200).json({ message: "success", allUsers: allUsers });
+  } catch (error) {
+    res.status(500).json({ message: error.message, error: error });
+  }
+};
+
+module.exports = { addUser: addUser, getAllUsers: getAllUsers };
