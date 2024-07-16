@@ -1,13 +1,15 @@
 const { Router } = require("express");
 const userRouter = Router();
 
-const { addUser, getAllUsers } = require("./controllers");
+const { signUp, login, getAllUsers } = require("./controllers");
 
 userRouter.get("/test", async (req, res) => {
   res.status(200).json({ message: "test okey dokey!" });
 });
 
-userRouter.post("/addUser", addUser);
+userRouter.post("/signUp", signUp);
+
+userRouter.post("/login", login);
 
 userRouter.get("/getAllUsers", getAllUsers);
 
