@@ -31,16 +31,19 @@ const comparePass = async (req, res, next) => {
       where: { username: req.body.username },
     });
 
+    if (!user) {
+      res.status(404).json({ message: "user not found" });
+    }
+
     const compare = await bcrypt.compare(req.body.password, user.password);
 
-    //just making sure it works
     if (!compare) {
-      console.log("no");
-    } else {
-      console.log("yes");
+      res.status(404).json({ message: "incorrect password" });
     }
 
     //attach user to the request
+
+    req.user = user;
     //next
     next();
   } catch (error) {
