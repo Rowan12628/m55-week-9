@@ -3,7 +3,7 @@ const userRouter = Router();
 
 const { signUp, login, getAllUsers } = require("./controllers");
 
-const { hashPass } = require("../middleware/auth");
+const { hashPass, comparePass } = require("../middleware/auth");
 
 userRouter.get("/test", async (req, res) => {
   res.status(200).json({ message: "test okey dokey!" });
@@ -11,7 +11,7 @@ userRouter.get("/test", async (req, res) => {
 
 userRouter.post("/signUp", hashPass, signUp);
 
-userRouter.post("/login", login);
+userRouter.post("/login", comparePass, login);
 
 userRouter.get("/getAllUsers", getAllUsers);
 
