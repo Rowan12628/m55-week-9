@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const saltRounds = parseInt(process.env.SALT_ROUNDS);
+const jwt = require("jsonwebtoken");
 
 const User = require("../users/model");
 
@@ -40,7 +41,30 @@ const comparePass = async (req, res, next) => {
   }
 };
 
+const verifyToken = async (req, res, next) => {
+  try {
+    const authToken = req.header("Authorization");
+    console.log(authToken);
+
+    const verified = jwt.verify(authToken, process.env.SECRET);
+    console.log(verified);
+
+    const user = await User.findOne({ where: { id: verified.id } });
+
+    if (!user) {
+      res.status(401).json({ message: "user not authorised" });
+    }
+
+    req.authCheck = user;
+
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "unauthorised user", error: error });
+  }
+};
+
 module.exports = {
   hashPass: hashPass,
   comparePass: comparePass,
+  verifyToken: verifyToken,
 };

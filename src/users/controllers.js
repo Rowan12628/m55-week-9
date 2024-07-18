@@ -30,6 +30,7 @@ const login = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
+    console.log("getting users");
     const allUsers = await User.findAll();
     res.status(200).json({ message: "success", allUsers: allUsers });
   } catch (error) {

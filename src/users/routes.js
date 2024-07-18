@@ -3,7 +3,7 @@ const userRouter = Router();
 
 const { signUp, login, getAllUsers } = require("./controllers");
 
-const { hashPass, comparePass } = require("../middleware/auth");
+const { hashPass, comparePass, verifyToken } = require("../middleware/auth");
 const {
   isData,
   isLowerCase,
@@ -18,6 +18,6 @@ userRouter.post("/signUp", isData, isLowerCase, isValidEmail, hashPass, signUp);
 
 userRouter.post("/login", comparePass, login);
 
-userRouter.get("/getAllUsers", getAllUsers);
+userRouter.get("/getAllUsers", verifyToken, getAllUsers);
 
 module.exports = userRouter;
