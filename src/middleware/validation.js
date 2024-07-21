@@ -30,21 +30,18 @@ const isLowerCase = async (req, res, next) => {
 //checks if email is valid using regex
 const isValidEmail = async (req, res, next) => {
   try {
-    const checkEmail = /^[a-zA-Z0-9. _%+-]+@[a-zA-Z0-9. -]+\\. [a-zA-Z]{2,}$/;
-
-    if (checkEmail.test(req.body.email)) {
-      res.status(422).json({ message: "success", body: req.body });
-    }
-
-    // const checkEmail = new RegExp(
-    //   /^[a-zA-Z0-9. _%+-]+@[a-zA-Z0-9. -]+\\. [a-zA-Z]{2,}$/
-    // );
-    // console.log("regex checkEmail: ", checkEmail);
-
-    // if (!checkEmail.test(req.body.email)) {
-    //   res.status(422).json({ message: "email not valid", body: req.body });
-    //   return;
+    // const checkEmail = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,6}$/;
+    // if (checkEmail.test(req.body.email)) {
+    //   res.status(422).json({ message: "success", body: req.body });
     // }
+
+    const checkEmail = new RegExp(/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,6}$/);
+    console.log("regex checkEmail: ", checkEmail);
+
+    if (!checkEmail.test(req.body.email)) {
+      res.status(422).json({ message: "email not valid" });
+      return;
+    }
 
     next();
   } catch (error) {
